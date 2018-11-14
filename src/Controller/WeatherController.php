@@ -5,14 +5,20 @@ namespace App\Controller;
 use App\GoogleApi\WeatherService;
 use App\Model\NullWeather;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Validation\ValidateService;
 
 class WeatherController extends AbstractController
 {
     public function index($day)
     {
         try {
-            $fromGoogle = new WeatherService();
-            $weather = $fromGoogle->getDay(new \DateTime($day));
+            $validator = new ValidateService();
+            if ( $validator->validate($day) ) {
+                $fromGoogle = new WeatherService();
+                $weather = $fromGoogle->getDay(new \DateTime($day));
+            } else {
+                $weather = new NullWeather();
+            }
         } catch (\Exception $exp) {
             $weather = new NullWeather();
         }
