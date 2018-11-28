@@ -4,27 +4,11 @@ namespace App\Services;
 
 class AgeCalculator
 {
-    protected $birthday ;
-
-    /**
-     * AgeCalculator constructor.
-     * @param $birthday
-     */
-    public function __construct($birthday)
-    {
-        $this->birthday = \DateTime::createFromFormat('Y-m-d', $birthday);
-    }
-
-    public function getAge()
+    public function getAge(\DateTime $birthday): string
     {
         $now = new \DateTime('now');
-        $age = $now->diff($this->getBirthday());
+        $age = $now->diff($birthday);
 
-        return $age->format('%y years old.');
-    }
-
-    public function getBirthday()
-    {
-        return $this->birthday;
+        return $age->format('%y');
     }
 }
